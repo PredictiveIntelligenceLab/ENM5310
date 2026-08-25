@@ -1,0 +1,23 @@
+# Core JAX dependencies
+jax[cpu]
+jaxlib
+
+# Machine Learning libraries
+numpy
+scipy
+matplotlib
+seaborn
+pandas
+scikit-learn
+
+# Deep Learning with JAX
+flax
+optax
+chex
+
+# Jupyter notebook support
+jupyter
+ipykernel
+
+# Utilities
+tqdm
