@@ -1,5 +1,5 @@
 # ENM5310: Data-driven Modeling and Probabilistic Scientific Computing
-**University of Pennsylvania - Spring 2024**  
+**University of Pennsylvania - Fall 2026**  
 **Instructor: Paris Perdikaris**
 
 ## About This Repository
