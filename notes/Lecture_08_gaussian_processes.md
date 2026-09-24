@@ -482,22 +482,24 @@ Set this beside Lecture 7. The model changed from a prior on weights to a prior 
 
 ## Practice problems
 
-*Ungraded; these feed the quizzes.*
+*Five questions in the style of the quizzes: each should take two or three minutes, with no computer. The answer follows each one — cover it and try first. Derivations and implementation are in Checkpoint E.*
 
-**P1.** Write ridge regression (Lecture 5) and Bayesian linear regression (Lecture 7) each in the three-step form of §1. What exactly differs in Step 2, and what differs in Step 3?
+**P1.** A Bayesian linear regression with RBF features centered on $[-1,1]$ predicts, at $x^\star = 5$, a mean of $0$ with essentially zero epistemic variance. Where did the overconfidence come from — the likelihood, the data, or the prior?
 
-**P2.** For a polynomial basis $\phi(x) = (1,x,\dots,x^p)^\top$ with $w\sim\mathcal{N}(0,\tau^2I)$, write the induced kernel and its prior variance $k(x,x)$. Is it stationary? Describe how prior samples behave as $|x|$ grows.
+*Answer.* The prior. Translated to function space, the prior variance at $x$ is $\tau^2\|\phi(x)\|^2$, which decays to zero far from every center — so before seeing any data the model already asserted $f(5)=0$ with near-certainty. Since conditioning never increases variance, no amount of data could have introduced uncertainty the prior did not contain. (§§2–3)
 
-**P3.** Verify the identity $(x-c)^2+(x'-c)^2 = 2(c-\bar x)^2+\frac12(x-x')^2$ used in §4.3. Why must the per-weight variance $\tau^2$ shrink as the grid spacing $\Delta$ shrinks?
+**P2.** True or false: adding more training data can, in some cases, increase the posterior variance at a test point. Explain in one sentence.
 
-**P4.** Show the divergence of §6.2 concretely. For $N = 3$ data points, set $f(x_n) = y_n$ and plot $\log p(y\mid f,\sigma^2)$ against $\log\sigma^2$. Then compute the marginal likelihood for a squared-exponential GP on the same data and plot it against $\log\sigma^2$ with $\ell$ and $\sigma_f^2$ fixed. Which one has a finite maximum?
+*Answer.* False. Conditioning a Gaussian gives $\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}$, and the subtracted matrix is positive semi-definite, so the conditional variance never exceeds the prior variance. Data removes uncertainty; it cannot create it. (§3.2)
 
-**P5.** For a single training point $x_1$ with target $y_1$ and a squared-exponential kernel, write $\mu^\star$ and $v^\star$ explicitly as functions of $x^\star$. Sketch both. How far from $x_1$ must you go for the variance to recover half its prior value?
+**P3.** Which of these is a valid kernel on $\mathbb{R}$, and why? (a) $k(x,x') = \phi(x)^\top\phi(x')$ for any feature map $\phi$; (b) $k(x,x') = \exp(-|x-x'|)$; (c) $k(x,x') = x-x'$.
 
-**P6.** Explain in words, without equations, why a GP with a very short length scale has a *low* marginal likelihood on smooth data, even though it can fit that data perfectly.
+*Answer.* (a) and (b) are valid; (c) is not. A valid kernel must be symmetric with positive semi-definite Gram matrices, and (c) is antisymmetric — it even gives $k(x,x) = 0$, a function with zero variance everywhere. (a) is valid by construction, since $a^\top\Phi\Phi^\top a = \|\Phi^\top a\|^2\ge0$; (b) is the Matérn-1/2 kernel. (§4.1)
 
-**P7.** Derive the gradient of §6.7 using the identities $\partial\log|C|/\partial\theta = \operatorname{tr}(C^{-1}\partial C/\partial\theta)$ and $\partial C^{-1}/\partial\theta = -C^{-1}(\partial C/\partial\theta)C^{-1}$.
+**P4.** The squared-exponential kernel was derived as a limit of the same RBF model that failed in §2. What changed in the limit, and why does that fix the extrapolation behavior?
 
-**P8.** Construct a dataset of about 30 points on which the marginal likelihood has two distinct local maxima in $\ell$. Plot the posterior mean and samples at each. Which would you report, and what additional data would settle the question?
+*Answer.* Basis functions are placed everywhere rather than only over $[-1,1]$, with each weight's prior variance shrinking as the centers get denser. The resulting kernel is stationary, so $k(x,x) = \sigma_f^2$ at every input: there is nowhere the prior claims certainty, and therefore nowhere the posterior can. (§4.3)
 
-**P9 (seeing Mercer's features).** On a grid of 200 points in $[-3,3]$, build the Gram matrices of a squared-exponential and a Matérn-1/2 kernel with the same $\ell$ and $\sigma_f^2$, and compute their eigendecompositions. Plot the first five eigenvectors of each, and plot both eigenvalue sequences on a log scale. Then reconstruct each Gram matrix from its top $M$ eigenpairs and report the relative error for $M\in\{5,10,20,50\}$. Which kernel needs more features to represent accurately, and how does that match what its prior samples look like?
+**P5.** True or false: two different feature maps can produce exactly the same kernel. What does your answer imply about which object to specify when building a model?
+
+*Answer.* True — replacing $\phi$ by $Q\phi$ for any orthogonal $Q$ leaves all inner products unchanged. Mercer's theorem says every valid kernel comes from *some* feature map, but not a unique one, so the kernel is the object the model actually depends on and the natural thing to specify directly. (§4.4)
