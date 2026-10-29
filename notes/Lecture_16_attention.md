@@ -34,22 +34,6 @@ Attention is conventionally written with **tokens as rows**, unlike the column-v
 | $\operatorname{softmax}(z)_j = e^{z_j}/\sum_{j'}e^{z_{j'}}$ | applied row-wise to matrices |
 | $h_j$, $s_t$ | encoder state at input position $j$, decoder state at output step $t$ (§0) |
 
-### Timing budget (90 min)
-
-| # | Segment | Min |
-|---|---|---|
-| 0 | Sequence-to-sequence: the RNN encoder–decoder and its limitations | 12 |
-| 1 | Bahdanau attention: removing the bottleneck | 13 |
-| 2 | Attention as a soft dictionary lookup | 12 |
-| 3 | You have seen this before: kernel regression | 8 |
-| 4 | Scaled dot-product attention | 10 |
-| 5 | Self-attention | 15 |
-| 6 | Positional information | 8 |
-| 7 | Multi-head attention and causal masking | 10 |
-| 8 | Summary | 2 |
-
-If time runs short, §§6–7 open Lecture 17.
-
 **Learning objectives.** After this lecture you should be able to:
 
 1. Describe the RNN encoder–decoder for sequence-to-sequence tasks, and state the three limitations that attention addresses.
